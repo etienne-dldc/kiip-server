@@ -1,20 +1,20 @@
 {
-  "name": "package-template",
+  "name": "@kiip/server",
   "version": "0.0.0",
-  "description": "",
+  "description": "Server for Kiip",
   "keywords": [],
-  "homepage": "https://github.com/etienne-dldc/package-template#readme",
+  "homepage": "https://github.com/etienne-dldc/kiip-server#readme",
   "bugs": {
-    "url": "https://github.com/etienne-dldc/package-template/issues"
+    "url": "https://github.com/etienne-dldc/kiip-server/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/etienne-dldc/package-template.git"
+    "url": "git+ssh://git@github.com/etienne-dldc/kiip-server.git"
   },
   "license": "MIT",
   "author": "Etienne Dldc <e.deladonchamps@gmail.com>",
   "main": "dist/index.js",
-  "module": "dist/package-template.esm.js",
+  "module": "dist/server.esm.js",
   "typings": "dist/index.d.ts",
   "directories": {
     "example": "examples",
@@ -30,8 +30,13 @@
     "start": "tsdx watch",
     "test": "tsdx test --coverage"
   },
-  "dependencies": {},
+  "dependencies": {
+    "nanoid": "^3.1.10",
+    "runtypes": "^4.2.0",
+    "tumau": "^1.0.0-alpha.77"
+  },
   "devDependencies": {
+    "@kiip/core": "0.4.2",
     "@types/jest": "^26.0.0",
     "codecov": "^3.6.5",
     "core-js": "3.6.5",
@@ -39,5 +44,8 @@
     "tsdx": "^0.13.2",
     "tslib": "^2.0.0",
     "typescript": "^3.9.2"
+  },
+  "peerDependencies": {
+    "@kiip/core": "0.4.2"
   }
 }
