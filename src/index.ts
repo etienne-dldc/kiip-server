@@ -11,38 +11,38 @@ import {
   JsonResponse,
   RouterConsumer,
   RequestConsumer,
-  HttpError,
+  HttpError
 } from 'tumau';
-import * as RT from 'runtypes';
+import * as z from 'zod';
 import { SyncData, MerkleTree, Kiip, KiipDatabase } from '@kiip/core';
 import { nanoid } from 'nanoid';
-import { RuntypesValidator } from './RuntypesValidator';
+import { ZodValidator } from './ZodValidator';
 
-const SyncDataValidator: RT.Runtype<SyncData> = RT.Record({
-  nodeId: RT.String,
-  fragments: RT.Array(
-    RT.Record({
-      documentId: RT.String,
-      timestamp: RT.String,
-      table: RT.String,
-      row: RT.String,
-      column: RT.String,
-      value: RT.Unknown,
+const SyncDataValidator: z.Schema<SyncData> = z.object({
+  nodeId: z.string(),
+  fragments: z.array(
+    z.object({
+      documentId: z.string(),
+      timestamp: z.string(),
+      table: z.string(),
+      row: z.string(),
+      column: z.string(),
+      value: z.unknown() as z.Schema<object | string | number | boolean | null>
     })
   ),
-  merkle: RT.Unknown.withGuard((v): v is MerkleTree => true),
+  merkle: z.unknown() as z.Schema<MerkleTree>
 });
 
-const AddDataValidator = RuntypesValidator(
-  RT.Record({
-    documentId: RT.String,
-    password: RT.String,
+const AddDataValidator = ZodValidator(
+  z.object({
+    documentId: z.string(),
+    password: z.string()
   })
 );
 
 const ROUTES = {
   add: Chemin.create('add'),
-  sync: Chemin.create('sync', CheminParam.string('docId')),
+  sync: Chemin.create('sync', CheminParam.string('docId'))
 };
 
 interface Metadata {
@@ -51,7 +51,7 @@ interface Metadata {
 
 export function KiipServer(database: KiipDatabase<any>, adminPassword: string) {
   const kiip = Kiip<any, Metadata>(database, {
-    getInitialMetadata: () => ({ token: nanoid() }),
+    getInitialMetadata: () => ({ token: nanoid() })
   });
 
   const server = TumauServer.create({
@@ -61,7 +61,7 @@ export function KiipServer(database: KiipDatabase<any>, adminPassword: string) {
       JsonPackage(),
       InvalidResponseToHttpError,
       RouterPackage([
-        Route.POST(ROUTES.add, AddDataValidator.validate, async (tools) => {
+        Route.POST(ROUTES.add, AddDataValidator.validate, async tools => {
           const { documentId, password } = AddDataValidator.getValue(tools);
           if (password !== adminPassword) {
             throw new HttpError.Unauthorized(`Invalid password`);
@@ -69,7 +69,7 @@ export function KiipServer(database: KiipDatabase<any>, adminPassword: string) {
           const doc = await kiip.getDocument(documentId);
           return JsonResponse.withJson({ token: doc.getState().meta.token });
         }),
-        Route.POST(ROUTES.sync, async (tools) => {
+        Route.POST(ROUTES.sync, async tools => {
           const request = tools.readContextOrFail(RequestConsumer);
           const authorization = request.headers.authorization;
           if (!authorization) {
@@ -82,23 +82,28 @@ export function KiipServer(database: KiipDatabase<any>, adminPassword: string) {
           const token = parts[1];
           const docId = tools.readContextOrFail(RouterConsumer).getOrFail(ROUTES.sync).docId;
           const docs = await kiip.getDocuments();
-          const doc = docs.find((d) => d.id === docId);
+          const doc = docs.find(d => d.id === docId);
           if (!doc) {
             throw new HttpError.NotFound();
           }
           if (doc.meta.token !== token) {
             throw new HttpError.Unauthorized(`Invalid token`);
           }
-          const data = SyncDataValidator.validate(tools);
-          if (data.success === false) {
-            throw new HttpError.BadRequest(data.message);
+          try {
+            const data = SyncDataValidator.parse(tools);
+            const docInstance = await kiip.getDocument(docId);
+            const res = await docInstance.handleSync(data);
+            return JsonResponse.withJson(res);
+          } catch (error) {
+            if (error instanceof z.ZodError) {
+              const message = error.errors.map(err => `  ${err.path.join('.')}: ${err.message}`);
+              throw new HttpError.BadRequest(`Schema validation failed: ${message}`);
+            }
+            throw error;
           }
-          const docInstance = await kiip.getDocument(docId);
-          const res = await docInstance.handleSync(data.value);
-          return JsonResponse.withJson(res);
-        }),
+        })
       ])
-    ),
+    )
   });
 
   return server;

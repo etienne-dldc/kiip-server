@@ -32,8 +32,8 @@
   },
   "dependencies": {
     "nanoid": "^3.1.10",
-    "runtypes": "^4.2.0",
-    "tumau": "^1.0.0-alpha.77"
+    "tumau": "^1.0.0-alpha.77",
+    "zod": "^1.7.1"
   },
   "devDependencies": {
     "@kiip/core": "0.4.2",
