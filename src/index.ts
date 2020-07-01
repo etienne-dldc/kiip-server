@@ -66,8 +66,8 @@ export function KiipServer(database: KiipDatabase<any>, adminPassword: string) {
           if (password !== adminPassword) {
             throw new HttpError.Unauthorized(`Invalid password`);
           }
-          const doc = await kiip.getDocument(documentId);
-          return JsonResponse.withJson({ token: doc.getState().meta.token });
+          const doc = await kiip.getDocumentState(documentId);
+          return JsonResponse.withJson({ token: doc.meta.token });
         }),
         Route.POST(ROUTES.sync, async tools => {
           const request = tools.readContextOrFail(RequestConsumer);
@@ -91,7 +91,7 @@ export function KiipServer(database: KiipDatabase<any>, adminPassword: string) {
           }
           try {
             const data = SyncDataValidator.parse(tools);
-            const docInstance = await kiip.getDocument(docId);
+            const docInstance = await kiip.getDocumentStore(docId);
             const res = await docInstance.handleSync(data);
             return JsonResponse.withJson(res);
           } catch (error) {

@@ -36,16 +36,16 @@
     "zod": "^1.7.1"
   },
   "devDependencies": {
-    "@kiip/core": "0.4.2",
-    "@types/jest": "^26.0.0",
+    "@kiip/core": "0.5.0",
+    "@types/jest": "^26.0.3",
     "codecov": "^3.6.5",
     "core-js": "3.6.5",
-    "np": "^6.2.3",
+    "np": "^6.2.5",
     "tsdx": "^0.13.2",
     "tslib": "^2.0.0",
-    "typescript": "^3.9.2"
+    "typescript": "^3.9.6"
   },
   "peerDependencies": {
-    "@kiip/core": "0.4.2"
+    "@kiip/core": "0.5.0"
   }
 }
