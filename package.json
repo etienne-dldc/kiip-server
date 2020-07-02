@@ -46,6 +46,6 @@
     "typescript": "^3.9.6"
   },
   "peerDependencies": {
-    "@kiip/core": "0.5.0"
+    "@kiip/core": "0.5.1"
   }
 }
