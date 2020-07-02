@@ -36,7 +36,7 @@
     "zod": "^1.7.1"
   },
   "devDependencies": {
-    "@kiip/core": "0.5.0",
+    "@kiip/core": "0.5.1",
     "@types/jest": "^26.0.3",
     "codecov": "^3.6.5",
     "core-js": "3.6.5",
