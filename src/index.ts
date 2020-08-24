@@ -41,7 +41,7 @@ const AddDataValidator = ZodValidator(
 );
 
 const ROUTES = {
-  add: Chemin.create('add'),
+  register: Chemin.create('register'),
   sync: Chemin.create('sync', CheminParam.string('docId'))
 };
 
@@ -61,8 +61,12 @@ export function KiipServer(database: KiipDatabase<any>, adminPassword: string) {
       JsonPackage(),
       InvalidResponseToHttpError,
       RouterPackage([
-        Route.POST(ROUTES.add, AddDataValidator.validate, async tools => {
-          const { documentId, password } = AddDataValidator.getValue(tools);
+        Route.GET('', async ctx => {
+          const doc = await kiip.getDocuments();
+          return JsonResponse.withJson({ status: 'ok', documentsCount: doc.length });
+        }),
+        Route.POST(ROUTES.register, AddDataValidator.validate, async ctx => {
+          const { documentId, password } = AddDataValidator.getValue(ctx);
           if (password !== adminPassword) {
             throw new HttpError.Unauthorized(`Invalid password`);
           }
@@ -101,6 +105,9 @@ export function KiipServer(database: KiipDatabase<any>, adminPassword: string) {
             }
             throw error;
           }
+        }),
+        Route.all(null, () => {
+          throw new HttpError.NotFound();
         })
       ])
     )
