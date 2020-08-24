@@ -69,8 +69,8 @@ export function KiipServer(database: KiipDatabase<any>, adminPassword: string) {
           const doc = await kiip.getDocumentState(documentId);
           return JsonResponse.withJson({ token: doc.meta.token });
         }),
-        Route.POST(ROUTES.sync, async tools => {
-          const request = tools.readContextOrFail(RequestConsumer);
+        Route.POST(ROUTES.sync, async ctx => {
+          const request = ctx.getOrFail(RequestConsumer);
           const authorization = request.headers.authorization;
           if (!authorization) {
             throw new HttpError.Unauthorized(`Missing authorization header`);
@@ -80,7 +80,7 @@ export function KiipServer(database: KiipDatabase<any>, adminPassword: string) {
             throw new HttpError.Unauthorized(`Invalid authorization header`);
           }
           const token = parts[1];
-          const docId = tools.readContextOrFail(RouterConsumer).getOrFail(ROUTES.sync).docId;
+          const docId = ctx.getOrFail(RouterConsumer).getOrFail(ROUTES.sync).docId;
           const docs = await kiip.getDocuments();
           const doc = docs.find(d => d.id === docId);
           if (!doc) {
@@ -90,7 +90,7 @@ export function KiipServer(database: KiipDatabase<any>, adminPassword: string) {
             throw new HttpError.Unauthorized(`Invalid token`);
           }
           try {
-            const data = SyncDataValidator.parse(tools);
+            const data = SyncDataValidator.parse(ctx);
             const docInstance = await kiip.getDocumentStore(docId);
             const res = await docInstance.handleSync(data);
             return JsonResponse.withJson(res);

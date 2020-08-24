@@ -1,15 +1,15 @@
 import * as z from 'zod';
-import { Middleware, Tools, Context, JsonParserConsumer, HttpError } from 'tumau';
+import { Middleware, Context, JsonParserConsumer, HttpError, ContextStack } from 'tumau';
 
 export function ZodValidator<T>(schema: z.Schema<T>) {
   const Ctx = Context.create<T>();
 
-  const validate: Middleware = async tools => {
-    const jsonBody = tools.readContextOrFail(JsonParserConsumer);
+  const validate: Middleware = async (ctx, next) => {
+    const jsonBody = ctx.getOrFail(JsonParserConsumer);
 
     try {
       const result = schema.parse(jsonBody);
-      return tools.withContext(Ctx.Provider(result)).next();
+      return next(ctx.with(Ctx.Provider(result)));
     } catch (error) {
       if (error instanceof z.ZodError) {
         const message = error.errors.map(err => `  ${err.path.join('.')}: ${err.message}`);
@@ -21,6 +21,6 @@ export function ZodValidator<T>(schema: z.Schema<T>) {
 
   return {
     validate,
-    getValue: (tools: Tools) => tools.readContextOrFail(Ctx.Consumer)
+    getValue: (ctx: ContextStack) => ctx.getOrFail(Ctx.Consumer)
   };
 }

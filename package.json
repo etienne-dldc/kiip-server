@@ -32,17 +32,17 @@
   },
   "dependencies": {
     "nanoid": "^3.1.12",
-    "tumau": "^1.0.0-alpha.78",
-    "zod": "^1.10.1"
+    "tumau": "^1.0.0-alpha.80",
+    "zod": "^1.10.3"
   },
   "devDependencies": {
     "@kiip/core": "0.5.2",
-    "@types/jest": "^26.0.8",
+    "@types/jest": "^26.0.10",
     "codecov": "^3.7.2",
     "core-js": "3.6.5",
-    "np": "^6.3.2",
-    "tsdx": "^0.13.2",
-    "tslib": "^2.0.0",
+    "np": "^6.4.0",
+    "tsdx": "^0.13.3",
+    "tslib": "^2.0.1",
     "typescript": "^3.9.7"
   },
   "peerDependencies": {
