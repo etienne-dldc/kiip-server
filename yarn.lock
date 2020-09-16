@@ -1020,13 +1020,13 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
-"@kiip/core@0.5.2":
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/@kiip/core/-/core-0.5.2.tgz#c2710b066055d80095917c348d068e32da54634b"
-  integrity sha512-tku9DEJnj595fPTdTUohfTiHh/vZ9xcJe9mU384HzLcadOmxX2m5+l4gBa4m6EPcFWQvIdUIdQEXqY4I4LYPUA==
+"@kiip/core@^0.5.3":
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/@kiip/core/-/core-0.5.3.tgz#678bdf3223eef4df14ce81a14d3d90384725a916"
+  integrity sha512-/SVKD3NKHSyqiAF1y4RtHSxY5nbH1sFww8wK0WKA8p69Btu/Y+qia4j5sPbeY1D5Jh2CRgco+ixfRaCjtvzBYw==
   dependencies:
     nanoid "^3.1.12"
-    suub "^3.0.1"
+    suub "^3.1.0"
 
 "@rollup/plugin-commonjs@^11.0.0":
   version "11.1.0"
@@ -1294,10 +1294,10 @@
   dependencies:
     jest-diff "^24.3.0"
 
-"@types/jest@^26.0.10":
-  version "26.0.10"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-26.0.10.tgz#8faf7e9756c033c39014ae76a7329efea00ea607"
-  integrity sha512-i2m0oyh8w/Lum7wWK/YOZJakYF8Mx08UaKA1CtbmFeDquVhAEdA7znacsVSf2hJ1OQ/OfVMGN90pw/AtzF8s/Q==
+"@types/jest@^26.0.14":
+  version "26.0.14"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-26.0.14.tgz#078695f8f65cb55c5a98450d65083b2b73e5a3f3"
+  integrity sha512-Hz5q8Vu0D288x3iWXePSn53W7hAjP0H7EQ6QvDO9c7t46mR0lNOLlfuwQ+JkVxuhygHzlzPX+0jKdA3ZgSh+Vg==
   dependencies:
     jest-diff "^25.2.1"
     pretty-format "^25.2.1"
@@ -5233,10 +5233,10 @@ normalize-url@^4.1.0:
   resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-4.5.0.tgz#453354087e6ca96957bd8f5baf753f5982142129"
   integrity sha512-2s47yzUxdexf1OhyRi4Em83iQk0aPvwTddtFz4hnSSw9dCEsLEGf6SwIO8ss/19S9iBb5sJaOuTvTGDeZI00BQ==
 
-np@^6.4.0:
-  version "6.4.0"
-  resolved "https://registry.yarnpkg.com/np/-/np-6.4.0.tgz#f0923605d0decf16d314c7ae0019c9de86b828d8"
-  integrity sha512-SfE5UKF77E4Ydjt4RHBpD0Lbrxnud9pVZijD51gb0pPV2CtWKTzbNYugrqxkPNWx0j2ptVacN9255/wBhCWTHg==
+np@^6.5.0:
+  version "6.5.0"
+  resolved "https://registry.yarnpkg.com/np/-/np-6.5.0.tgz#1092e001a7dd22412bb459d9bcb86a43806660f2"
+  integrity sha512-Xm1kUUlEqOZsu0qBA3A9wB44EBDRXubrLvfdCodG1TOllW0aymVI0qeFWKGN+kH74/XjO1B5how07fm3g+c72w==
   dependencies:
     "@samverschueren/stream-to-observable" "^0.3.0"
     any-observable "^0.5.0"
@@ -6816,10 +6816,10 @@ supports-hyperlinks@^2.0.0:
     has-flag "^4.0.0"
     supports-color "^7.0.0"
 
-suub@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/suub/-/suub-3.0.1.tgz#155e9a1038c6f2740412819edc463eb58922134f"
-  integrity sha512-0ERRH0DKP7XUuIWHdg+Ep4AwZGYlY88xvfAIIT0vMo8qjBbSQACHpE35dLWzi9hTDgSQjVjM89zjh1d86KX5Jg==
+suub@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/suub/-/suub-3.1.0.tgz#47565a53c8f5d3765196335bdb16778cbda723a0"
+  integrity sha512-eul4xrqVaCKk1C9QlTmBdIvBS0qQxozyxCv414KGxDyci88gmL5Tp5zsZ+zQVwEefnyrT5Iu1w4Kqb5VZArlqw==
 
 symbol-observable@^1.1.0, symbol-observable@^1.2.0:
   version "1.2.0"
@@ -7539,7 +7539,7 @@ yargs@^13.3.0:
     y18n "^4.0.0"
     yargs-parser "^13.1.2"
 
-zod@^1.10.3:
-  version "1.10.3"
-  resolved "https://registry.yarnpkg.com/zod/-/zod-1.10.3.tgz#a69e60a96115d8968020e42aa0d7d1903e3e50c7"
-  integrity sha512-TxvLXUx7red0MKzx85sOwcoAWSsO+ChnYIsPzV/rWouS57yagZZlPp2bBTaXOu685lZE8H9vQK2nJs1vxleQTA==
+zod@^1.11.8:
+  version "1.11.8"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-1.11.8.tgz#5e6b2eb3114c73d5043889fa9dfbab0b60a93ff6"
+  integrity sha512-iusmIB00ll0Fxzyhrp8EJPaJDTSyQMKMCwk2hH2XrtgY/QcygPJTX13fSof/r7b4hL5cBeN5aeVl6WN1xpr90g==
