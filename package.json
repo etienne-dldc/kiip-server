@@ -36,7 +36,7 @@
     "zod": "^1.11.8"
   },
   "devDependencies": {
-    "@kiip/core": "^0.5.4",
+    "@kiip/core": "^0.6.0",
     "@types/jest": "^26.0.14",
     "codecov": "^3.7.2",
     "core-js": "3.6.5",
@@ -46,6 +46,6 @@
     "typescript": "^3.9.7"
   },
   "peerDependencies": {
-    "@kiip/core": "^0.5.4"
+    "@kiip/core": "^0.6.0"
   }
 }
