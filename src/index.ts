@@ -11,8 +11,7 @@ import {
   JsonResponse,
   RouterConsumer,
   RequestConsumer,
-  HttpError,
-  JsonParserConsumer
+  HttpError
 } from 'tumau';
 import * as z from 'zod';
 import { SyncData, MerkleTree, Kiip, KiipDatabase } from '@kiip/core';
@@ -96,18 +95,10 @@ export function KiipServer(database: KiipDatabase<any>, adminPassword: string) {
           if (doc.meta.token !== token) {
             throw new HttpError.Unauthorized(`Invalid token`);
           }
-          try {
-            const data = SyncDataValidator.getValue(ctx);
-            const docInstance = await kiip.getDocumentStore(docId);
-            const res = await docInstance.handleSync(data);
-            return JsonResponse.withJson(res);
-          } catch (error) {
-            if (error instanceof z.ZodError) {
-              const message = error.errors.map(err => `  ${err.path.join('.')}: ${err.message}`);
-              throw new HttpError.BadRequest(`Schema validation failed: ${message}`);
-            }
-            throw error;
-          }
+          const data = SyncDataValidator.getValue(ctx);
+          const docInstance = await kiip.getDocumentStore(docId);
+          const res = await docInstance.handleSync(data);
+          return JsonResponse.withJson(res);
         }),
         Route.all(null, () => {
           throw new HttpError.NotFound();
