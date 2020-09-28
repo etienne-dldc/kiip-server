@@ -11,27 +11,30 @@ import {
   JsonResponse,
   RouterConsumer,
   RequestConsumer,
-  HttpError
+  HttpError,
+  JsonParserConsumer
 } from 'tumau';
 import * as z from 'zod';
 import { SyncData, MerkleTree, Kiip, KiipDatabase } from '@kiip/core';
 import { nanoid } from 'nanoid';
 import { ZodValidator } from './ZodValidator';
 
-const SyncDataValidator: z.Schema<SyncData> = z.object({
-  nodeId: z.string(),
-  fragments: z.array(
-    z.object({
-      documentId: z.string(),
-      timestamp: z.string(),
-      table: z.string(),
-      row: z.string(),
-      column: z.string(),
-      value: z.unknown() as z.Schema<object | string | number | boolean | null>
-    })
-  ),
-  merkle: z.unknown() as z.Schema<MerkleTree>
-});
+const SyncDataValidator = ZodValidator<SyncData>(
+  z.object({
+    nodeId: z.string(),
+    fragments: z.array(
+      z.object({
+        documentId: z.string(),
+        timestamp: z.string(),
+        table: z.string(),
+        row: z.string(),
+        column: z.string(),
+        value: z.unknown() as z.Schema<object | string | number | boolean | null>
+      })
+    ),
+    merkle: z.unknown() as z.Schema<MerkleTree>
+  })
+);
 
 const AddDataValidator = ZodValidator(
   z.object({
@@ -73,7 +76,7 @@ export function KiipServer(database: KiipDatabase<any>, adminPassword: string) {
           const doc = await kiip.getDocumentState(documentId);
           return JsonResponse.withJson({ token: doc.meta.token });
         }),
-        Route.POST(ROUTES.sync, async ctx => {
+        Route.POST(ROUTES.sync, SyncDataValidator.validate, async ctx => {
           const request = ctx.getOrFail(RequestConsumer);
           const authorization = request.headers.authorization;
           if (!authorization) {
@@ -94,7 +97,7 @@ export function KiipServer(database: KiipDatabase<any>, adminPassword: string) {
             throw new HttpError.Unauthorized(`Invalid token`);
           }
           try {
-            const data = SyncDataValidator.parse(ctx);
+            const data = SyncDataValidator.getValue(ctx);
             const docInstance = await kiip.getDocumentStore(docId);
             const res = await docInstance.handleSync(data);
             return JsonResponse.withJson(res);
